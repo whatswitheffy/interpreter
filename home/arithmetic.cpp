@@ -2,15 +2,15 @@
 #include <vector>
 #include <iostream>
 #include "lexem.h"
-using namespace std;
 #include <stack>
+using namespace std;
 
 vector <Lexem *> parseLexem(const string &codeline);
-int evaluatePostfix(vector <Lexem *> postfix);
 vector <Lexem *> buildPostfix(vector <Lexem *> infix); 
+int evaluatePostfix(vector <Lexem *> postfix);
 bool isOperator(Lexem *object);
 
-Lexem *get_oper(string codeline, int &pos) {
+Lexem *getOperator(string codeline, int &pos) {
     string subcodeline;
     for(int op = 20; op >= 0; --op) {
         subcodeline = codeline.substr(pos, OPERTEXT[op].size());
@@ -21,33 +21,40 @@ Lexem *get_oper(string codeline, int &pos) {
     }
     return nullptr;
 }
-Lexem *get_num(string codeline, int &pos) {
+
+Lexem *getNumber(string codeline, int &pos) {
     int number = 0;
     int old_pos = pos;
     while(codeline[pos] >= '0' && codeline[pos] <= '9') {
         number = number * 10 + codeline[pos] - '0';
         pos++;
     }
-    if (pos == old_pos) {
+    if(pos == old_pos) {
         return nullptr;
     }
     return new Number(number);
 }
-Lexem *scan_var(string codeline, int &pos) {
+
+Lexem *scanVariable(string codeline, int &pos) {
     string name;
-    int old_pos = pos;
+    //int old_pos = pos;
+    bool positionFlag = true;
     Variable *ptr;
     while((codeline[pos] >= 'a' && codeline[pos] <= 'z') || (codeline[pos] >= 'A' && codeline[pos] <= 'Z') || 
           (codeline[pos] >= '0' && codeline[pos] <= '9') || codeline[pos] == '_') 
     {
         name.push_back(codeline[pos]);
         pos++;
+        positionFlag = false;
     }
-    if(pos == old_pos) {
+   /* if(pos == old_pos) {
+        return nullptr;
+    }*/
+    if(positionFlag) {
         return nullptr;
     }
     auto search = varTable.find(name);
-    if (search == varTable.end()) {
+    if(search == varTable.end()) {
         ptr = new Variable(name);
         varTable.insert(make_pair(name, ptr));
         return ptr;
@@ -56,21 +63,32 @@ Lexem *scan_var(string codeline, int &pos) {
     }
 }
 
+bool isEmptyChar(char empty) {
+    if(empty == ' ' || empty == '\t') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 vector <Lexem *> parseLexem(const string &codeline) {
     Lexem *lexem;
     vector <Lexem *> parsed;
     for(int pos = 0; pos < codeline.size();) {
-        lexem = get_oper(codeline, pos);
+        if(isEmptyChar(codeline[pos])) {
+            pos++;
+        }
+        lexem = getOperator(codeline, pos);
         if(lexem != nullptr) {    
             parsed.push_back(lexem);
             continue;
         }
-        lexem = get_num(codeline, pos);
+        lexem = getNumber(codeline, pos);
         if(lexem != nullptr) {
             parsed.push_back(lexem);
             continue;
         }
-        lexem = scan_var(codeline, pos);
+        lexem = scanVariable(codeline, pos);
         if(lexem != nullptr) {
             parsed.push_back(lexem);
             continue;
@@ -79,6 +97,7 @@ vector <Lexem *> parseLexem(const string &codeline) {
     return parsed;
 }
 
+//delete tmp element in evalpost
 int evaluatePostfix(vector <Lexem *> postfix) {
     int result = 0;
     Lexem *left, *right;
@@ -134,15 +153,14 @@ int main () {
     vector <Lexem *> infix;
     vector <Lexem *> postfix;
     int value = 0;
-    cin >> codeline;
+    getline(cin, codeline);
     while(codeline != "exit") {
         infix = parseLexem(codeline);
         postfix = buildPostfix(infix);
         value = evaluatePostfix(postfix);
         cout << "value: " << value << endl ;
-        cin >> codeline;
+        getline(cin, codeline);
     }
-
     return 0;
 }
 
