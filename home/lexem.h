@@ -9,9 +9,9 @@ class Lexem;
 class Number;
 class Operators;
 class Variable;
-
 map <string, Variable*> varTable;
-
+//убрать из дочерних классов слово virtual 
+//написать деструктор
 
 enum OPERATOR {
     LBRACKET, RBRACKET,
@@ -60,9 +60,11 @@ int PRIORITY [] = {
     9, 9,
     10, 10, 10
 };
+
 class Lexem {
     public :
         Lexem();
+        ~Lexem() {delete this;};
         virtual OPERATOR getType() {};
         virtual bool isOperator() {return false;};
         virtual int getValue() const {};
@@ -71,18 +73,21 @@ class Lexem {
         virtual void setValue(int value) {};
         virtual void print() {}; 
 };
-Lexem::Lexem() {
-    
+
+Lexem::Lexem() {  
 }
+
 class Number : public Lexem {
     int value;
     public :
         Number();
+        ~Number() {delete this;};
         Number(int value);
-        virtual bool isOperator() {return false;};
-        virtual int getValue() const;
-        virtual void print();
+        bool isOperator() {return false;};
+        int getValue() const;
+        void print();
 };
+
 Number::Number(int value) {
     this->value = value;
 }
@@ -93,19 +98,20 @@ void Number::print() {
     cout << value;
 }
 
-
 class Operators : public Lexem {
     OPERATOR opertype;
     public :
         Operators();
+        ~Operators() {delete this;};
         Operators(int idx);
-        virtual bool isOperator() {return true;};
         Operators(vector <Lexem *> vec);
-        virtual OPERATOR getType();
-        virtual int getPriority();
-        virtual int getValue(Lexem *left, Lexem *right);
-        virtual void print();
+        OPERATOR getType();
+        bool isOperator() {return true;};
+        int getPriority();
+        int getValue(Lexem *left, Lexem *right);
+        void print();
 };
+
 Operators::Operators() {}
 OPERATOR Operators::getType() {
     return opertype;
@@ -186,12 +192,14 @@ class Variable : public Lexem {
     int value;
     public:
         Variable();
+        ~Variable() {delete this;};
         Variable(string name);
-        virtual bool isOperator() {return false;};
-        virtual void print();
-        virtual int getValue() const;
-        virtual void setValue(int value);
+        bool isOperator() {return false;};
+        void print();
+        int getValue() const;
+        void setValue(int value);
 };
+
 Variable::Variable() {
     name = nullptr;
 }
