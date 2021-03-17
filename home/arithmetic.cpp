@@ -24,12 +24,17 @@ Lexem *getOperator(string codeline, int &pos) {
 
 Lexem *getNumber(string codeline, int &pos) {
     int number = 0;
-    int old_pos = pos;
+    //int old_pos = pos;
+    bool positionFlag = true;
     while(codeline[pos] >= '0' && codeline[pos] <= '9') {
         number = number * 10 + codeline[pos] - '0';
         pos++;
+        positionFlag = false;
     }
-    if(pos == old_pos) {
+    /*if(pos == old_pos) {
+        return nullptr;
+    }*/
+     if(positionFlag) {
         return nullptr;
     }
     return new Number(number);
