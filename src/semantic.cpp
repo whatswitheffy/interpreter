@@ -39,6 +39,3 @@ int evaluatePostfix(vector <Lexem *> postfix, int row) {
         }
     return row + 1;
 }
-int main() {
-    return 0;
-}

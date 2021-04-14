@@ -88,6 +88,3 @@ bool isEmptyChar(char empty) {
         return false;
     }
 }
-int main() {
-    return 0;
-}

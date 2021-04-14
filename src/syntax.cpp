@@ -65,6 +65,3 @@ void ifOperator(vector <Lexem *> &stackOfOperators, vector <Lexem *> postfix_, v
         stackOfOperators.push_back(infix[i]);
     } 
 }
-int main() {
-    return 0;
-}

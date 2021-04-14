@@ -1,4 +1,8 @@
 #include "lexem.h"
+#include "const.h"
+
+map <string, Variable *> varTable;
+map <string, int> lableTable;
 
 Lexem::Lexem() {  
 }
@@ -26,7 +30,7 @@ void Operators::print() {
 }
 int Operators::getPriority() {
     int priority = 0;
-    for(int i = 0; i < sizeof(OPERTEXT); ++i) {
+    for(int i = 0; i < OPER_LEN; ++i) {
         if(getType() == i) {
             priority = PRIORITY[i]; 
         }
@@ -115,8 +119,4 @@ bool Variable::inLabelTable() {
     } else {
         return true;
     }
-}
-
-int main() {
-    return 0;
 }
