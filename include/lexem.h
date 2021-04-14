@@ -12,8 +12,8 @@ class Number;
 class Operators;
 class Variable;
 class Goto;
-map <string, Variable *> varTable;
-map <string, int> lableTable;
+extern map <string, Variable *> varTable;
+extern map <string, int> lableTable;
 
 class Lexem {
     public :
