@@ -1,6 +1,8 @@
-g++ -c const.cpp -I./include -o const.o
-g++ -c lexem.cpp -I./include -o lexem.o
-g++ -c lexical.cpp -I./include -o lexical.o
-g++ -c syntax.cpp -I./include -o syntax.o
-g++ -c semantic.cpp -I./include -o semantic.o
-g++ main.cpp const.o lexem.o lexical.o syntax.o semantic.o -I./include -o main
+all:
+	mkdir bin -p
+	g++ -c src/const.cpp -I./include -o bin/const.o
+	g++ -c src/lexem.cpp -I./include -o bin/lexem.o
+	g++ -c src/lexical.cpp -I./include -o bin/lexical.o
+	g++ -c src/syntax.cpp -I./include -o bin/syntax.o
+	g++ -c src/semantic.cpp -I./include -o bin/semantic.o
+	g++ src/main.cpp bin/const.o bin/lexem.o bin/lexical.o bin/syntax.o bin/semantic.o -I./include -o bin/main
