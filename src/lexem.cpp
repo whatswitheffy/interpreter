@@ -101,11 +101,13 @@ Variable::Variable(string name) {
 Array::Array(Lexem *left, Lexem *right) {
     arrayName = left->getName();
     elementNumber = right->getValue();
-    value = ArrayTable[arrayName][elementNumber];
+}
+
+int Array::getValue() {
+    return ArrayTable[arrayName][elementNumber];
 }
 
 void Array::setValue(int number) {
-    this->value = number;
-    ArrayTable[arrayName][elementNumber] = value;
+    ArrayTable[arrayName][elementNumber] = number;
 }
 
