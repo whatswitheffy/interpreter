@@ -89,6 +89,7 @@ class Array: public Lexem {
     int value;
 public:
     Array(Lexem *left, Lexem *right);
+    int getValue();
     void setValue(int number);
 };
 
