@@ -102,12 +102,8 @@ Array::Array(Lexem *left, Lexem *right) {
     arrayName = left->getName();
     elementNumber = right->getValue();
 }
-
-int Array::getValue() {
-    return ArrayTable[arrayName][elementNumber];
-}
-
-void Array::setValue(int number) {
+int Array::getValue() { return ArrayTable[arrayName][elementNumber]; }
+void Array::setValue(int number) { 
     ArrayTable[arrayName][elementNumber] = number;
 }
 
