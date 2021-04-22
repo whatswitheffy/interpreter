@@ -86,7 +86,6 @@ public:
 class Array: public Lexem {
     string arrayName;
     int elementNumber;
-    int value;
 public:
     Array(Lexem *left, Lexem *right);
     int getValue();
