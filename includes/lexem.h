@@ -15,7 +15,7 @@ class Goto;
 class Array;
 extern map <string, Variable *> varTable;
 extern map <string, int> lableTable;
-extern map <string, int *> ArrayTable;
+extern map <string, int*> ArrayTable;
 
 class Lexem {
 public:
