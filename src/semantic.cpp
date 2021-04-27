@@ -4,7 +4,6 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
     int result = 0;
     stack <Lexem*> evaluationStack;
     vector<Lexem *> postfix = postfixLines[row];
-    stack<Lexem *> new_Numbers;
     Lexem *left, *right;
     for(int i = 0; i < postfix.size(); ++i) {
         if(postfix[i] == nullptr) {
@@ -72,7 +71,6 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
                 if(!programStack.empty()) {
                     evaluationStack.push(new Number(programStack.top()));
                     programStack.pop();
-                    new_Numbers.push(evaluationStack.top());
                 }
                 continue;
             } else { 
