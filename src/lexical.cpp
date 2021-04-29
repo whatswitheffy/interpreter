@@ -6,9 +6,6 @@ Lexem *getOperator(string codeline, int &pos) {
         subcodeline = codeline.substr(pos, OPERTEXT[op].size());
         if(OPERTEXT[op] == subcodeline) {
             pos += OPERTEXT[op].size();
-            if(OPERATOR(op) == COMMA) {
-                return nullptr;
-            }
             if(OPERATOR(op) == GOTO || OPERATOR(op) == IF || OPERATOR(op) == ELSE ||
                 OPERATOR(op) == WHILE || OPERATOR(op) == ENDWHILE || OPERATOR(op) == FUNCTION) {
                 return new Goto(op); 
@@ -116,17 +113,26 @@ void initLabels(vector <Lexem *> &infix, int row) {
         }
         if(infix[i - 1] -> getType() == FUNCTION) {
             ((Goto*)infix[i - 1])->setRow(row);
-            funTable[infix[i]->getName()].argNum = infix.size() - i - 3;
-            cout << "argNum" << infix.size() - i - 3 << endl;;
+            int commaCounter = 0;
+            for(int i = 0 ; i < infix.size(); ++i) {
+                if(infix[i]->getType() == COMMA) {
+                        commaCounter++;                   
+                }
+            }
+            funTable[infix[i]->getName()].argNum = commaCounter + 1;
+            cout << "argNum" << funTable[infix[i]->getName()].argNum << endl;
             funTable[infix[i]->getName()].row = row;
-            cout << "row" << row << endl;
-            delete infix[i + 1];
-            delete infix[infix.size() - 1];
-            cout << "after delete" << endl;
-            infix.erase(infix.begin() + i);
-            infix.erase(infix.begin() + i);
-            infix.erase(infix.end() - 1);
-            cout << "after erase" << endl;
+            for(int i = 0 ; i < infix.size(); ++i) {
+                infix[i]->print(); cout << " ";
+                if(funTable.find(infix[i]->getName()) != funTable.end()) {
+                    infix.erase(infix.begin() + i); 
+                    i--;
+                }
+                if((infix[i]->getType() == LBRACKET) || (infix[i]->getType() == RBRACKET) || (infix[i]->getType() == COMMA)) {
+                    infix.erase(infix.begin() + i);
+                    i--;
+                }               
+            }
             return;
         }
     }
