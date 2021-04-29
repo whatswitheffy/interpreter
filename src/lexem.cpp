@@ -90,6 +90,7 @@ Variable::Variable() { name = nullptr; }
 void Variable::setValue(int value) { varTable[name] = value; }
 int Variable::getValue() const { return varTable[name]; }
 void Variable::print() { cout << name; }
+int Variable::getPriority() { return 11;}
 bool Variable::inLabelTable() {  
     if(lableTable.find(this->getName()) == lableTable.end()) {
         return false;
