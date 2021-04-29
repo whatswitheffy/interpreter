@@ -67,6 +67,7 @@ public:
     Variable(string name);
     bool isOperator() {return false;};
     bool isVariable() {return true;};
+    int getPriority();
     void print();
     int getValue() const;
     void setValue(int value);
@@ -87,6 +88,7 @@ public:
     int getRow(){ return row; }
     void print() { cout << " [ < row " << row << ">" << OPERTEXT[(int)getType()] << " ] "; }
 };
+
 class Array: public Lexem {
     string arrayName;
     int elementNumber;
