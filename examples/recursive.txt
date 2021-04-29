@@ -1,0 +1,7 @@
+y = f (5)
+function f(x)
+if  x > 0
+x = x - 1
+x = f(x)
+endif
+return x
