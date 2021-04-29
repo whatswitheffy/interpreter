@@ -26,13 +26,10 @@ int main () {
     }
     cout <<  "initLabels start" << endl;
     for(int row = 0; row < (int)infixLines.size(); ++row) {
-        cout << "row: " << row << endl; 
         initLabels(infixLines[row], row);
     }
-     cout <<  "initLabels end" << endl;
-     cout <<  "initJumps start" << endl;
+     cout << "\n initLabels end" << endl;
     initJumps(infixLines);
-    cout <<  "initJumps end" << endl;
     cout <<  "PostfixLines start" << endl;
     for(int i = 0; i < (int)infixLines.size(); ++i) {
         postfixLines.push_back(buildPostfix(infixLines[i]));
