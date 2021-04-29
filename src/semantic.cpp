@@ -4,6 +4,7 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
     int result = 0;
     stack <Lexem*> evaluationStack;
     vector<Lexem *> postfix = postfixLines[row];
+    stack<Lexem *> new_Numbers;
     Lexem *left, *right;
     for(int i = 0; i < postfix.size(); ++i) {
         if(postfix[i] == nullptr) {
@@ -36,6 +37,7 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
                 evaluationStack.pop();
                 evaluationStack.push(new Array(left, right));
             } else if(postfix[i]->getType() == RETURN) {
+                cout << "IsReturn" << endl;
                 if(!evaluationStack.empty()) {
                     programStack.push(evaluationStack.top()->getValue());
                     evaluationStack.pop();
@@ -49,9 +51,20 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
                     programStack.pop();
                 }
                 continue;
-            } else if(lexemop->getType() == LBRACKET) {
-                Lexem *func_name = postfix[i + 1];
-                postfix[i + 1] = nullptr;
+            } else {               
+                if(evaluationStack.size() >= 2) {
+                    right = evaluationStack.top();
+                    evaluationStack.pop();
+                    left = evaluationStack.top();
+                    evaluationStack.pop();
+                    result = postfix[i]->getValue(left, right);
+                    evaluationStack.push(new Number(result));
+                }
+            }
+        } else {
+            if(funTable.find(postfix[i]->getName()) != funTable.end()) {
+                cout << "Found in FunTable" << endl;
+                Lexem *func_name = postfix[i];
                 for(int arg = 0; arg < funTable[func_name->getName()].argNum; arg++) {
                     programStack.push(evaluationStack.top()->getValue());
                     evaluationStack.pop();
@@ -71,19 +84,10 @@ int evaluatePostfix(vector <vector <Lexem *>> postfixLines, int row) {
                 if(!programStack.empty()) {
                     evaluationStack.push(new Number(programStack.top()));
                     programStack.pop();
+                    new_Numbers.push(evaluationStack.top());
                 }
                 continue;
-            } else { 
-                if(evaluationStack.size() >= 2) {
-                    right = evaluationStack.top();
-                    evaluationStack.pop();
-                    left = evaluationStack.top();
-                    evaluationStack.pop();
-                    result = postfix[i]->getValue(left, right);
-                    evaluationStack.push(new Number(result));
-                }
             }
-        } else {
                 evaluationStack.push(postfix[i]);               
             }
         }
